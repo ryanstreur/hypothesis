@@ -35,7 +35,7 @@ Lark, unless someone volunteers to either fund or do the maintenance.
 """
 
 from inspect import getfullargspec
-from typing import Dict, Optional
+from typing import Optional
 
 import attr
 import lark
@@ -205,7 +205,7 @@ def from_lark(
     grammar: lark.lark.Lark,
     *,
     start: Optional[str] = None,
-    explicit: Optional[Dict[str, st.SearchStrategy[str]]] = None,
+    explicit: Optional[dict[str, st.SearchStrategy[str]]] = None,
 ) -> st.SearchStrategy[str]:
     """A strategy for strings accepted by the given context-free grammar.
 

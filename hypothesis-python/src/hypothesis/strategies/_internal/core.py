@@ -30,17 +30,11 @@ from typing import (
     Any,
     AnyStr,
     Callable,
-    Dict,
-    FrozenSet,
     Hashable,
     Iterable,
-    List,
     Optional,
     Pattern,
     Sequence,
-    Set,
-    Tuple,
-    Type,
     TypeVar,
     Union,
     overload,
@@ -111,7 +105,7 @@ from hypothesis.strategies._internal.strings import (
 from hypothesis.strategies._internal.utils import cacheable, defines_strategy
 from hypothesis.utils.conventions import InferType, infer, not_set
 
-UniqueBy = Union[Callable[[Ex], Hashable], Tuple[Callable[[Ex], Hashable], ...]]
+UniqueBy = Union[Callable[[Ex], Hashable], tuple[Callable[[Ex], Hashable], ...]]
 
 
 @cacheable
@@ -131,7 +125,7 @@ def sampled_from(elements: Sequence[T]) -> SearchStrategy[T]:
 
 
 @overload  # noqa: F811
-def sampled_from(elements: Type[enum.Enum]) -> SearchStrategy[Any]:
+def sampled_from(elements: type[enum.Enum]) -> SearchStrategy[Any]:
     # `SearchStrategy[Enum]` is unreliable due to metaclass issues.
     raise NotImplementedError
 
@@ -200,7 +194,7 @@ def lists(
     max_size: Optional[int] = None,
     unique_by: Optional[UniqueBy] = None,
     unique: bool = False,
-) -> SearchStrategy[List[Ex]]:
+) -> SearchStrategy[list[Ex]]:
     """Returns a list containing values drawn from elements with length in the
     interval [min_size, max_size] (no bounds in that direction if these are
     None). If max_size is 0, only the empty list will be drawn.
@@ -317,7 +311,7 @@ def sets(
     *,
     min_size: int = 0,
     max_size: Optional[int] = None,
-) -> SearchStrategy[Set[Ex]]:
+) -> SearchStrategy[set[Ex]]:
     """This has the same behaviour as lists, but returns sets instead.
 
     Note that Hypothesis cannot tell if values are drawn from elements
@@ -339,7 +333,7 @@ def frozensets(
     *,
     min_size: int = 0,
     max_size: Optional[int] = None,
-) -> SearchStrategy[FrozenSet[Ex]]:
+) -> SearchStrategy[frozenset[Ex]]:
     """This is identical to the sets function but instead returns
     frozensets."""
     return lists(
@@ -389,10 +383,10 @@ def iterables(
 
 @defines_strategy()
 def fixed_dictionaries(
-    mapping: Dict[T, SearchStrategy[Ex]],
+    mapping: dict[T, SearchStrategy[Ex]],
     *,
-    optional: Optional[Dict[T, SearchStrategy[Ex]]] = None,
-) -> SearchStrategy[Dict[T, Ex]]:
+    optional: Optional[dict[T, SearchStrategy[Ex]]] = None,
+) -> SearchStrategy[dict[T, Ex]]:
     """Generates a dictionary of the same type as mapping with a fixed set of
     keys mapping to strategies. ``mapping`` must be a dict subclass.
 
@@ -436,7 +430,7 @@ def dictionaries(
     dict_class: type = dict,
     min_size: int = 0,
     max_size: Optional[int] = None,
-) -> SearchStrategy[Dict[Ex, T]]:
+) -> SearchStrategy[dict[Ex, T]]:
     # Describing the exact dict_class to Mypy drops the key and value types,
     # so we report Dict[K, V] instead of Mapping[Any, Any] for now.  Sorry!
     """Generates dictionaries of type ``dict_class`` with keys drawn from the ``keys``
@@ -883,7 +877,7 @@ if sys.version_info[:2] >= (3, 8):  # pragma: no cover
 
 
 @cacheable
-def from_type(thing: Type[Ex]) -> SearchStrategy[Ex]:
+def from_type(thing: type[Ex]) -> SearchStrategy[Ex]:
     """Looks up the appropriate search strategy for the given type.
 
     ``from_type`` is used internally to fill in missing arguments to
@@ -950,7 +944,7 @@ def from_type(thing: Type[Ex]) -> SearchStrategy[Ex]:
         )
 
 
-def _from_type(thing: Type[Ex]) -> SearchStrategy[Ex]:
+def _from_type(thing: type[Ex]) -> SearchStrategy[Ex]:
     # TODO: We would like to move this to the top level, but pending some major
     # refactoring it's hard to do without creating circular imports.
     from hypothesis.strategies._internal import types
@@ -1313,7 +1307,7 @@ def decimals(
 
         strat = fractions(min_value, max_value).map(fraction_to_decimal)
     # Compose with sampled_from for infinities and NaNs as appropriate
-    special: List[Decimal] = []
+    special: list[Decimal] = []
     if allow_nan or (allow_nan is None and (None in (min_value, max_value))):
         special.extend(map(Decimal, ("NaN", "-NaN", "sNaN", "-sNaN")))
     if allow_infinity or (allow_infinity is max_value is None):
@@ -1370,7 +1364,7 @@ class PermutationStrategy(SearchStrategy):
 
 
 @defines_strategy()
-def permutations(values: Sequence[T]) -> SearchStrategy[List[T]]:
+def permutations(values: Sequence[T]) -> SearchStrategy[list[T]]:
     """Return a strategy which returns permutations of the ordered collection
     ``values``.
 
@@ -1682,8 +1676,8 @@ def data() -> SearchStrategy[DataObject]:
 
 
 def register_type_strategy(
-    custom_type: Type[Ex],
-    strategy: Union[SearchStrategy[Ex], Callable[[Type[Ex]], SearchStrategy[Ex]]],
+    custom_type: type[Ex],
+    strategy: Union[SearchStrategy[Ex], Callable[[type[Ex]], SearchStrategy[Ex]]],
 ) -> None:
     """Add an entry to the global type-to-strategy lookup.
 

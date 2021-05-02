@@ -15,7 +15,7 @@
 
 import math
 import re
-from typing import Any, Mapping, NamedTuple, Optional, Sequence, Tuple, Union
+from typing import Any, Mapping, NamedTuple, Optional, Sequence, Union
 
 import numpy as np
 
@@ -29,14 +29,14 @@ from hypothesis.strategies._internal.strategies import T, check_strategy
 from hypothesis.strategies._internal.utils import defines_strategy
 from hypothesis.utils.conventions import UniqueIdentifier, not_set
 
-Shape = Tuple[int, ...]
+Shape = tuple[int, ...]
 # flake8 and mypy disagree about `ellipsis` (the type of `...`), and hence:
-BasicIndex = Tuple[Union[int, slice, "ellipsis", np.newaxis], ...]  # noqa: F821
+BasicIndex = tuple[Union[int, slice, "ellipsis", np.newaxis], ...]  # noqa: F821
 TIME_RESOLUTIONS = tuple("Y  M  D  h  m  s  ms  us  ns  ps  fs  as".split())
 
 
 class BroadcastableShapes(NamedTuple):
-    input_shapes: Tuple[Shape, ...]
+    input_shapes: tuple[Shape, ...]
     result_shape: Shape
 
 
@@ -1077,7 +1077,7 @@ _SIGNATURE_MULTIPLE_OUTPUT = r"^{0}->{0}$".format(_ARGUMENT_LIST)
 
 
 class _GUfuncSig(NamedTuple):
-    input_shapes: Tuple[Shape, ...]
+    input_shapes: tuple[Shape, ...]
     result_shape: Shape
 
 
@@ -1430,7 +1430,7 @@ def integer_array_indices(
     *,
     result_shape: st.SearchStrategy[Shape] = array_shapes(),
     dtype: np.dtype = "int",
-) -> st.SearchStrategy[Tuple[np.ndarray, ...]]:
+) -> st.SearchStrategy[tuple[np.ndarray, ...]]:
     """Return a search strategy for tuples of integer-arrays that, when used
     to index into an array of shape ``shape``, given an array whose shape
     was drawn from ``result_shape``.

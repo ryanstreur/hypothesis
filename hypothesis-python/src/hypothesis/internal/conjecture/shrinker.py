@@ -14,7 +14,6 @@
 # END HEADER
 
 from collections import defaultdict
-from typing import Dict
 
 import attr
 
@@ -65,7 +64,7 @@ def sort_key(buffer):
     return (len(buffer), buffer)
 
 
-SHRINK_PASS_DEFINITIONS: Dict[str, "ShrinkPassDefinition"] = {}
+SHRINK_PASS_DEFINITIONS: dict[str, "ShrinkPassDefinition"] = {}
 
 
 @attr.s()

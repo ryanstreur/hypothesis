@@ -31,7 +31,7 @@ from collections import defaultdict
 from inspect import getfullargspec
 from io import StringIO
 from random import Random
-from typing import Any, BinaryIO, Callable, Hashable, List, Optional, TypeVar, Union
+from typing import Any, BinaryIO, Callable, Hashable, Optional, TypeVar, Union
 from unittest import TestCase
 
 import attr
@@ -1278,7 +1278,7 @@ def find(
         )
     specifier.validate()
 
-    last: List[Ex] = []
+    last: list[Ex] = []
 
     @settings
     @given(specifier)

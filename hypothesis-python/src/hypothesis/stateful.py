@@ -26,7 +26,7 @@ from collections.abc import Iterable
 from copy import copy
 from functools import lru_cache
 from io import StringIO
-from typing import Any, Dict, List
+from typing import Any
 from unittest import TestCase
 
 import attr
@@ -217,16 +217,16 @@ class RuleBasedStateMachine(metaclass=StateMachineMeta):
     executed.
     """
 
-    _rules_per_class: Dict[type, List[classmethod]] = {}
-    _invariants_per_class: Dict[type, List[classmethod]] = {}
-    _initializers_per_class: Dict[type, List[classmethod]] = {}
+    _rules_per_class: dict[type, list[classmethod]] = {}
+    _invariants_per_class: dict[type, list[classmethod]] = {}
+    _initializers_per_class: dict[type, list[classmethod]] = {}
 
     def __init__(self):
         if not self.rules():
             raise InvalidDefinition(f"Type {type(self).__name__} defines no rules")
-        self.bundles: Dict[str, list] = {}
+        self.bundles: dict[str, list] = {}
         self.name_counter = 1
-        self.names_to_values: Dict[str, Any] = {}
+        self.names_to_values: dict[str, Any] = {}
         self.__stream = StringIO()
         self.__printer = RepresentationPrinter(self.__stream)
         self._initialize_rules_to_run = copy(self.initialize_rules())
@@ -350,7 +350,7 @@ class RuleBasedStateMachine(metaclass=StateMachineMeta):
     TestCase = TestCaseProperty()
 
     @classmethod
-    @lru_cache()
+    @lru_cache
     def _to_test_case(state_machine_class):
         class StateMachineTestCase(TestCase):
             settings = Settings(deadline=None, suppress_health_check=HealthCheck.all())

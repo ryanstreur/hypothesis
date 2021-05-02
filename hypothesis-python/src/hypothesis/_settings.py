@@ -25,7 +25,7 @@ import inspect
 import os
 import warnings
 from enum import Enum, IntEnum, unique
-from typing import TYPE_CHECKING, Any, Collection, Dict, List, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Collection, Optional, TypeVar, Union
 
 import attr
 
@@ -44,7 +44,7 @@ if TYPE_CHECKING:
 
 __all__ = ["settings"]
 
-all_settings: Dict[str, "Setting"] = {}
+all_settings: dict[str, "Setting"] = {}
 
 T = TypeVar("T")
 
@@ -134,7 +134,7 @@ class settings(metaclass=settingsMeta):
     """
 
     __definitions_are_locked = False
-    _profiles: Dict[str, "settings"] = {}
+    _profiles: dict[str, "settings"] = {}
     __module__ = "hypothesis"
 
     def __getattr__(self, name):
@@ -457,7 +457,7 @@ class HealthCheck(Enum):
         return f"{self.__class__.__name__}.{self.name}"
 
     @classmethod
-    def all(cls) -> List["HealthCheck"]:
+    def all(cls) -> list["HealthCheck"]:
         return list(HealthCheck)
 
     data_too_large = 1
